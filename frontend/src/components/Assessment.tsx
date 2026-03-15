@@ -6,7 +6,11 @@ import { PILLARS, type PillarId } from '@/lib/pillars';
 import { scoreAssessment, type AssessmentAnswers } from '@/lib/scoring';
 import { AssessmentResult } from './AssessmentResult';
 
-export function Assessment() {
+interface AssessmentProps {
+  onComplete?: (answers: AssessmentAnswers) => void;
+}
+
+export function Assessment({ onComplete }: AssessmentProps) {
   const [answers, setAnswers] = useState<Partial<AssessmentAnswers>>({});
   const [result, setResult] = useState<PillarId | null>(null);
 
@@ -15,7 +19,9 @@ export function Assessment() {
     setAnswers(updated);
 
     if (Object.keys(updated).length === 4) {
-      setResult(scoreAssessment(updated as AssessmentAnswers));
+      const complete = updated as AssessmentAnswers;
+      setResult(scoreAssessment(complete));
+      onComplete?.(complete);
     }
   };
 

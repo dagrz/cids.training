@@ -5,6 +5,7 @@ export interface SignupPayload {
   email: string;
   phone: string;
   countryCode: string;
+  timezone: string;
   assessmentResult?: Record<string, number>;
 }
 

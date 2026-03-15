@@ -4,13 +4,20 @@
 import { useState } from 'react';
 import { submitSignup } from '@/lib/api';
 
-export function SignupForm() {
+interface SignupFormProps {
+  assessmentResult?: Record<string, number>;
+}
+
+export function SignupForm({ assessmentResult }: SignupFormProps) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [countryCode, setCountryCode] = useState('+1');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [timezone] = useState(() =>
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +35,13 @@ export function SignupForm() {
 
     setLoading(true);
     try {
-      await submitSignup({ email, phone: phone.replace(/\D/g, ''), countryCode });
+      await submitSignup({
+        email,
+        phone: phone.replace(/\D/g, ''),
+        countryCode,
+        timezone,
+        assessmentResult,
+      });
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
