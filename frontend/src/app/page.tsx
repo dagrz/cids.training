@@ -2,6 +2,7 @@ import { Nav } from '@/components/Nav';
 import { Hero } from '@/components/Hero';
 import { WhyOrder } from '@/components/WhyOrder';
 import { Gallery } from '@/components/Gallery';
+import { Assessment } from '@/components/Assessment';
 import { WhatYouGet } from '@/components/WhatYouGet';
 import { Transformations } from '@/components/Transformations';
 import { Footer } from '@/components/Footer';
@@ -13,7 +14,8 @@ export default function Home() {
       <Hero />
       <WhyOrder />
       <Gallery />
-      {/* Assessment and Signup go here in Task 6-7 */}
+      <Assessment />
+      {/* SignupForm goes here in Task 7 */}
       <WhatYouGet />
       <Transformations />
       <Footer />
