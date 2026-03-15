@@ -1,0 +1,11 @@
+{
+  "name": "cids-training",
+  "private": true,
+  "workspaces": ["frontend", "backend", "infra", "e2e"],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspace=frontend",
+    "deploy:dev": "npm run deploy:dev --workspace=infra",
+    "deploy:prod": "npm run deploy:prod --workspace=infra"
+  }
+}
