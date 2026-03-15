@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { PILLARS } from '@/lib/pillars';
 import { PillarRow } from './PillarRow';
+import { AnimateIn } from './AnimateIn';
 
 export function Hero() {
   return (
@@ -13,8 +14,10 @@ export function Hero() {
       </p>
 
       <div className="flex flex-col gap-2 mb-6">
-        {PILLARS.map((pillar) => (
-          <PillarRow key={pillar.id} pillar={pillar} />
+        {PILLARS.map((pillar, i) => (
+          <AnimateIn key={pillar.id} delay={i * 0.1}>
+            <PillarRow pillar={pillar} />
+          </AnimateIn>
         ))}
       </div>
 
