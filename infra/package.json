@@ -1,0 +1,20 @@
+{
+  "name": "cids-infra",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "deploy:dev": "cdk deploy --context env=dev",
+    "deploy:prod": "cdk deploy --context env=prod",
+    "diff": "cdk diff",
+    "synth": "cdk synth"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.130.0",
+    "constructs": "^10.3.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.130.0",
+    "typescript": "^5.4.0"
+  }
+}
