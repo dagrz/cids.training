@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIDS Training Framework Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A5;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 148mm;
+    height: 210mm;
+    padding: 24px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* Pillar top accent bars */
+  .page-consistency { border-top: 4px solid #6366f1; }
+  .page-intensity { border-top: 4px solid #ec4899; }
+  .page-diet { border-top: 4px solid #f59e0b; }
+  .page-sleep { border-top: 4px solid #06b6d4; }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .heading-consistency { color: #6366f1; }
+  .heading-intensity { color: #ec4899; }
+  .heading-diet { color: #f59e0b; }
+  .heading-sleep { color: #06b6d4; }
+
+  p {
+    color: rgba(26, 26, 26, 0.7);
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  p.body-tight {
+    margin-bottom: 5px;
+  }
+
+  .caption {
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .bold {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .card {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-consistency { border-left: 3px solid #6366f1; }
+  .card-intensity { border-left: 3px solid #ec4899; }
+  .card-diet { border-left: 3px solid #f59e0b; }
+  .card-sleep { border-left: 3px solid #06b6d4; }
+
+  .target-box {
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+
+  .target-consistency {
+    background: rgba(99, 102, 241, 0.08);
+    border-left: 2px solid #6366f1;
+  }
+
+  .target-intensity {
+    background: rgba(236, 72, 153, 0.08);
+    border-left: 2px solid #ec4899;
+  }
+
+  .target-diet {
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 2px solid #f59e0b;
+  }
+
+  .target-sleep {
+    background: rgba(6, 182, 212, 0.08);
+    border-left: 2px solid #06b6d4;
+  }
+
+  .target-box .metric {
+    font-weight: 800;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+
+  .quote {
+    font-style: italic;
+    color: rgba(26, 26, 26, 0.5);
+    font-size: 12px;
+    margin: 10px 0;
+    padding-left: 12px;
+    border-left: 2px solid #e0e0e0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+
+  ul li {
+    color: rgba(26, 26, 26, 0.7);
+    font-size: 13px;
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+
+  ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: rgba(26, 26, 26, 0.35);
+  }
+
+  .checklist li::before {
+    content: "☐";
+    font-size: 12px;
+  }
+
+  .checklist li {
+    padding-left: 18px;
+    margin-bottom: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+  table th {
+    text-align: left;
+    font-weight: 600;
+    color: #1a1a1a;
+    padding: 5px 8px;
+    border-bottom: 2px solid #e0e0e0;
+    font-size: 11px;
+  }
+
+  table td {
+    padding: 4px 8px;
+    color: rgba(26, 26, 26, 0.7);
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 11px;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 10px 0;
+  }
+
+  /* Cover page styles */
+  .cover-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .wordmark {
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    color: rgba(26, 26, 26, 0.4);
+    margin-bottom: 36px;
+  }
+
+  .cover-pillar {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    width: 100%;
+    max-width: 340px;
+    border-radius: 6px;
+    background: #f8f8f8;
+  }
+
+  .cover-pillar-number {
+    font-size: 22px;
+    font-weight: 900;
+    margin-right: 12px;
+    width: 28px;
+    flex-shrink: 0;
+  }
+
+  .cover-pillar-content {
+    flex: 1;
+  }
+
+  .cover-pillar-name {
+    font-weight: 800;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+
+  .cover-pillar-tagline {
+    font-size: 11px;
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  .cover-pillar-metric {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(26, 26, 26, 0.6);
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .noise-line {
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(26, 26, 26, 0.3);
+    margin-top: 28px;
+    margin-bottom: 8px;
+  }
+
+  .url-line {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(26, 26, 26, 0.3);
+    letter-spacing: 1px;
+  }
+
+  /* Timeline page */
+  .timeline-item {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 10px;
+  }
+
+  .timeline-bar {
+    width: 6px;
+    border-radius: 3px;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .timeline-content {
+    flex: 1;
+  }
+
+  .timeline-weeks {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(26, 26, 26, 0.4);
+    margin-bottom: 2px;
+  }
+
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .timeline-desc {
+    font-size: 12px;
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  /* References */
+  .ref-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ref-list li {
+    font-size: 10px;
+    color: rgba(26, 26, 26, 0.55);
+    line-height: 1.45;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .ref-list li::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: rgba(26, 26, 26, 0.4);
+    font-size: 9px;
+  }
+
+  .ref-section-heading {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+  }
+
+  /* Quick ref */
+  .qr-table th {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .qr-table td {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .qr-table tr td:first-child {
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* Habit loop */
+  .habit-loop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  .habit-loop-item {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #6366f1;
+  }
+
+  .habit-loop-arrow {
+    font-size: 14px;
+    color: rgba(26, 26, 26, 0.25);
+  }
+
+  /* RIR scale */
+  .rir-scale {
+    margin: 8px 0;
+  }
+
+  .rir-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .rir-label {
+    font-weight: 800;
+    font-size: 13px;
+    width: 48px;
+    flex-shrink: 0;
+    color: #ec4899;
+  }
+
+  .rir-desc {
+    font-size: 12px;
+    color: rgba(26, 26, 26, 0.6);
+  }
+
+  .rir-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Protein sources */
+  .protein-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+    margin: 8px 0;
+  }
+
+  .protein-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(26, 26, 26, 0.6);
+    padding: 3px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .protein-item span:last-child {
+    font-weight: 600;
+    color: #f59e0b;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 16px;
+    left: 24px;
+    right: 24px;
+    text-align: center;
+    font-size: 9px;
+    color: rgba(26, 26, 26, 0.25);
+  }
+
+  .small-text {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .small-text li {
+    font-size: 11px;
+  }
+
+  .xs-text {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .xs-text li {
+    font-size: 10px;
+  }
+
+  .mb-4 { margin-bottom: 4px; }
+  .mb-6 { margin-bottom: 6px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-10 { margin-bottom: 10px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mt-4 { margin-top: 4px; }
+  .mt-6 { margin-top: 6px; }
+  .mt-8 { margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1: COVER ==================== -->
+<div class="page">
+  <div class="cover-center">
+    <div class="wordmark">CIDS</div>
+    <div class="subtitle">TRAINING FRAMEWORK</div>
+
+    <div class="cover-pillar" style="border-left: 3px solid #6366f1;">
+      <div class="cover-pillar-number" style="color: #6366f1;">1</div>
+      <div class="cover-pillar-content">
+        <div class="cover-pillar-name">Consistency</div>
+        <div class="cover-pillar-tagline">Show Up</div>
+      </div>
+      <div class="cover-pillar-metric">4x / week</div>
+    </div>
+
+    <div class="cover-pillar" style="border-left: 3px solid #ec4899;">
+      <div class="cover-pillar-number" style="color: #ec4899;">2</div>
+      <div class="cover-pillar-content">
+        <div class="cover-pillar-name">Intensity</div>
+        <div class="cover-pillar-tagline">Push Hard</div>
+      </div>
+      <div class="cover-pillar-metric">&lt;2 RIR</div>
+    </div>
+
+    <div class="cover-pillar" style="border-left: 3px solid #f59e0b;">
+      <div class="cover-pillar-number" style="color: #f59e0b;">3</div>
+      <div class="cover-pillar-content">
+        <div class="cover-pillar-name">Diet</div>
+        <div class="cover-pillar-tagline">Eat Right</div>
+      </div>
+      <div class="cover-pillar-metric">1g/lb protein</div>
+    </div>
+
+    <div class="cover-pillar" style="border-left: 3px solid #06b6d4;">
+      <div class="cover-pillar-number" style="color: #06b6d4;">4</div>
+      <div class="cover-pillar-content">
+        <div class="cover-pillar-name">Sleep</div>
+        <div class="cover-pillar-tagline">Rest Well</div>
+      </div>
+      <div class="cover-pillar-metric">7+ hrs / night</div>
+    </div>
+
+    <div class="noise-line">The rest is noise.</div>
+    <div class="url-line">cids.training</div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: CONSISTENCY — Why It's Pillar #1 ==================== -->
+<div class="page page-consistency">
+  <h2 class="heading-consistency mb-4">CONSISTENCY</h2>
+  <h1>Why Consistency Is Pillar #1</h1>
+
+  <p>Forget supplements. Forget meal timing. Forget the perfect program. None of it matters if you don't show up.</p>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">The 21-Day Myth — Debunked</h4>
+    <p class="body-tight small-text">Lally et al. (2010) found exercise habits take a median of <span class="bold">91 days</span> — not 21. Range: 18&ndash;254 days. There is no universal timeline for habit formation.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">Why Frequency Matters</h4>
+    <p class="body-tight small-text">Schoenfeld et al. (2016) — training 2x/week beats 1x for hypertrophy even with equal volume. Showing up more often is itself a growth stimulus.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">The Critical Window</h4>
+    <p class="body-tight small-text">Kaushal &amp; Rhodes (2015) — attendance patterns in the first 4 weeks predict everything. People who exercise 1+ extra time per week in weeks 1&ndash;4 are <span class="bold">3x more likely</span> to stick with it long term.</p>
+  </div>
+
+  <div class="quote">"It's not what we do once in a while that shapes our lives, but what we do consistently." — Tony Robbins</div>
+
+  <div class="page-footer">cids.training — 2</div>
+</div>
+
+<!-- ==================== PAGE 3: CONSISTENCY — The Science of Habit Formation ==================== -->
+<div class="page page-consistency">
+  <h2 class="heading-consistency mb-4">CONSISTENCY</h2>
+  <h1>The Science of Habit Formation</h1>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">BJ Fogg's Behavior Model</h4>
+    <p class="body-tight small-text">B = MAP (Motivation &times; Ability &times; Prompt). All three must align for a behavior to occur. Lower the barrier, raise the prompt, and motivation becomes less critical.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">Implementation Intentions</h4>
+    <p class="body-tight small-text">Gollwitzer (1997): "If [situation], then [behavior]" — goals completed <span class="bold">3x more often</span> when paired with a specific plan for when and where.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">Habit Stacking</h4>
+    <p class="body-tight small-text">Clear (2018): "After [existing habit], I will [new habit]." This technique produced a <span class="bold">64% boost</span> in adoption by piggybacking on established neural pathways.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">Identity-Based Habits</h4>
+    <p class="body-tight small-text">"I am a person who exercises" vs "I'm trying to exercise." Identity shift predicts persistence through obstacles. When the behavior becomes part of who you are, motivation becomes irrelevant.</p>
+  </div>
+
+  <div class="card card-consistency">
+    <h4 class="heading-consistency mb-4">Enjoyment Over Results</h4>
+    <p class="body-tight small-text">Affective judgments (&beta; = .13) predict habit formation more strongly than outcomes. Focus on how exercise feels, not what it produces. If you enjoy it, you'll keep doing it.</p>
+  </div>
+
+  <h4 class="heading-consistency mt-6 mb-4">The Habit Loop</h4>
+  <div class="habit-loop">
+    <div class="habit-loop-item">Cue</div>
+    <div class="habit-loop-arrow">&rarr;</div>
+    <div class="habit-loop-item">Routine</div>
+    <div class="habit-loop-arrow">&rarr;</div>
+    <div class="habit-loop-item">Reward</div>
+    <div class="habit-loop-arrow">&rarr;</div>
+    <div class="habit-loop-item">Identity</div>
+  </div>
+
+  <div class="page-footer">cids.training — 3</div>
+</div>
+
+<!-- ==================== PAGE 4: CONSISTENCY — 6-Week Ramp-Up ==================== -->
+<div class="page page-consistency">
+  <h2 class="heading-consistency mb-4">CONSISTENCY</h2>
+  <h1>Your 6-Week Consistency Ramp-Up</h1>
+
+  <div class="target-box target-consistency mb-8">
+    <div class="metric">Target: 4x per week for 6 consecutive weeks</div>
+  </div>
+
+  <h3 class="heading-consistency">Week 1&ndash;2: Build the Trigger</h3>
+  <ul class="small-text mb-8">
+    <li>Pick 4 days and block them in your calendar as non-negotiable</li>
+    <li>Create your habit stack: "After [morning coffee / finishing work], I [put on gym clothes]"</li>
+    <li>Start tiny: 20 minutes is enough. The goal is showing up, not performance</li>
+    <li>Track only one thing: did you go? Yes/No checkmark</li>
+    <li>Reward yourself immediately after (favorite podcast, smoothie, whatever)</li>
+    <li>If you miss a day: it's fine. Lally et al. found missing one day doesn't disrupt habit formation</li>
+  </ul>
+
+  <h3 class="heading-consistency">Week 3&ndash;4: Build Automaticity</h3>
+  <ul class="small-text mb-8">
+    <li>Continue 4x/week — this is the critical formation window</li>
+    <li>Extend sessions to your target duration (30&ndash;45 min)</li>
+    <li>Add one new element per week to maintain novelty (different exercise, class, or equipment)</li>
+    <li>Start an achievement log: "4/4 this week" builds self-efficacy</li>
+    <li>Find an accountability partner or group — 2.8x more likely to succeed (2025 meta-analysis of 42 studies)</li>
+  </ul>
+
+  <h3 class="heading-consistency">Week 5&ndash;6: Lock It In</h3>
+  <ul class="small-text">
+    <li>At 42&ndash;49 days, research shows habit peaks for 48% of gym members</li>
+    <li>Reduce decision-making: clothes laid out, bag packed, route automated</li>
+    <li>Shift language: tell people "I exercise regularly" — public commitment strengthens habit</li>
+    <li>Plan for disruptions: what happens when you travel, get sick, have a bad day?</li>
+    <li>If it still doesn't feel automatic, stay in this phase — don't rush to Intensity</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 4</div>
+</div>
+
+<!-- ==================== PAGE 5: CONSISTENCY — Mistakes & Graduation ==================== -->
+<div class="page page-consistency">
+  <h2 class="heading-consistency mb-4">CONSISTENCY</h2>
+  <h1>Common Mistakes &amp; Graduation Checklist</h1>
+
+  <h3 class="mt-4 mb-6">Common Mistakes</h3>
+  <div class="card card-consistency">
+    <ul class="small-text" style="margin-bottom:0;">
+      <li>Starting with 6 days/week (burns out by week 2)</li>
+      <li>Focusing on the "perfect program" instead of just going</li>
+      <li>Tracking performance metrics too early (track consistency, not weight/reps)</li>
+      <li>Beating yourself up for missed days instead of returning the next day</li>
+      <li>Trying to add diet/sleep changes simultaneously</li>
+    </ul>
+  </div>
+
+  <h3 class="heading-consistency mt-8 mb-6">Graduation Checklist</h3>
+  <p class="caption mb-6">Move to Intensity when ALL boxes are checked:</p>
+  <div class="card card-consistency">
+    <ul class="checklist small-text" style="margin-bottom:0;">
+      <li>You've completed 4x/week for 6 consecutive weeks</li>
+      <li>Going to the gym feels automatic, not like a decision</li>
+      <li>Missing a session feels wrong, not like a relief</li>
+      <li>You have a consistent time and trigger that works</li>
+      <li>You can handle schedule disruptions without falling off</li>
+    </ul>
+  </div>
+
+  <div class="section-divider mt-8"></div>
+
+  <h4 class="mt-6 mb-4" style="color: rgba(26,26,26,0.4); font-size: 11px;">REFERENCES</h4>
+  <ul class="ref-list">
+    <li data-num="1." style="padding-left:20px;">Lally, P. et al. (2010). How are habits formed: Modelling habit formation in the real world. <em>European Journal of Social Psychology</em>, 40(6), 998&ndash;1009.</li>
+    <li data-num="2." style="padding-left:20px;">Kaushal, N. &amp; Rhodes, R. (2015). Exercise habit formation in new gym members. <em>Journal of Behavioral Medicine</em>, 38, 652&ndash;663.</li>
+    <li data-num="3." style="padding-left:20px;">Schoenfeld, B. et al. (2016). Effects of resistance training frequency. <em>Journal of Sports Sciences</em>, 34(16), 1523&ndash;1532.</li>
+    <li data-num="4." style="padding-left:20px;">Gollwitzer, P. &amp; Brandst&auml;tter, V. (1997). Implementation intentions and effective goal pursuit. <em>Journal of Personality and Social Psychology</em>, 73(1), 186&ndash;199.</li>
+    <li data-num="5." style="padding-left:20px;">Fogg, BJ. <em>Tiny Habits</em>. Stanford Behavior Design Lab.</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 5</div>
+</div>
+
+<!-- ==================== PAGE 6: BLANK/TRANSITION (keeping pillar count right) ==================== -->
+<!-- Plan says Pages 2-6 for Consistency = 5 pages. We have pages 2-5 = 4 content pages. Add page 6 as a transition. -->
+<div class="page" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+  <div style="text-align:center;">
+    <div style="font-size:72px; font-weight:900; color:#ec4899; margin-bottom:8px;">2</div>
+    <div style="font-size:28px; font-weight:900; color:#1a1a1a; margin-bottom:4px;">INTENSITY</div>
+    <div style="font-size:16px; font-weight:600; color:rgba(26,26,26,0.4); letter-spacing:3px;">PUSH HARD</div>
+    <div style="margin-top:24px; width:60px; height:4px; background:#ec4899; border-radius:2px; margin-left:auto; margin-right:auto;"></div>
+  </div>
+  <div class="page-footer">cids.training — 6</div>
+</div>
+
+<!-- ==================== PAGE 7: INTENSITY — Why It's Pillar #2 ==================== -->
+<div class="page page-intensity">
+  <h2 class="heading-intensity mb-4">INTENSITY</h2>
+  <h1>Why Intensity Is Pillar #2</h1>
+
+  <p>You're showing up. Good. Now the question is: are you actually working? Most people aren't.</p>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">The Hidden Reserve</h4>
+    <p class="body-tight small-text">Marcora (2014) found that when subjects reported complete exhaustion during cycling, their muscles could still produce <span class="bold">3x the power output</span> required. Your brain quits before your body does.</p>
+  </div>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">Beginners Massively Underestimate Capacity</h4>
+    <p class="body-tight small-text">Steele et al. (2017) — people underpredicted their capacity by <span class="bold">2.6&ndash;3.4 reps</span>. Zourdos et al. (2016) — novices underestimate by 4&ndash;5 reps. A beginner at perceived failure is really at RPE 6&ndash;7.</p>
+  </div>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">What Actually Drives Growth</h4>
+    <p class="body-tight small-text">Refalo et al. (2023) meta-analysis — training within 0&ndash;3 RIR is sufficient for hypertrophy. But most beginners train at 5&ndash;8 RIR without realizing it.</p>
+  </div>
+
+  <div class="quote">"I hate every minute of training. But I always remain consistent at it." — Muhammad Ali</div>
+
+  <div class="page-footer">cids.training — 7</div>
+</div>
+
+<!-- ==================== PAGE 8: INTENSITY — The Science of Pushing Harder ==================== -->
+<div class="page page-intensity">
+  <h2 class="heading-intensity mb-4">INTENSITY</h2>
+  <h1>The Science of Pushing Harder</h1>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">Discomfort Tolerance Is Trainable</h4>
+    <p class="body-tight small-text">Regular exercise increases pain tolerance dose-dependently (PLOS ONE, 2023). It's the exposure to discomfort itself that builds tolerance. This isn't about genetics — it's about practice.</p>
+  </div>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">Fear vs Grit</h4>
+    <p class="body-tight small-text">Fear of pain is the strongest predictor of low tolerance. Grit is the strongest predictor of high tolerance (Tesarz et al., 2020). Reframe discomfort as progress, not danger.</p>
+  </div>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">Self-Talk Works</h4>
+    <p class="body-tight small-text">Blanchfield et al. (2014) — motivational self-talk improved endurance by <span class="bold">18%</span> and reduced perceived effort. Second-person ("You've got this") works better than first-person.</p>
+  </div>
+
+  <div class="card card-intensity">
+    <h4 class="heading-intensity mb-4">Association &gt; Dissociation</h4>
+    <p class="body-tight small-text">At high intensity, focusing INTO the sensation (association) enables greater output than distracting yourself. Stay with the discomfort — it's where the growth is.</p>
+  </div>
+
+  <h3 class="heading-intensity mt-6 mb-6">RIR Scale — Reps In Reserve</h3>
+  <div class="rir-scale">
+    <div class="rir-row">
+      <div class="rir-label">RIR 0</div>
+      <div class="rir-bar" style="width:100%; background:linear-gradient(90deg, #ec4899, #f472b6);"></div>
+    </div>
+    <div class="rir-row">
+      <div class="rir-label" style="font-size:11px;"></div>
+      <div class="rir-desc">Could not do another rep (failure)</div>
+    </div>
+    <div class="rir-row mt-4">
+      <div class="rir-label">RIR 1</div>
+      <div class="rir-bar" style="width:80%; background:linear-gradient(90deg, #ec4899, #f9a8d4);"></div>
+    </div>
+    <div class="rir-row">
+      <div class="rir-label" style="font-size:11px;"></div>
+      <div class="rir-desc">Could maybe do 1 more</div>
+    </div>
+    <div class="rir-row mt-4">
+      <div class="rir-label">RIR 2</div>
+      <div class="rir-bar" style="width:60%; background:linear-gradient(90deg, #f9a8d4, #fce7f3);"></div>
+    </div>
+    <div class="rir-row">
+      <div class="rir-label" style="font-size:11px;"></div>
+      <div class="rir-desc">Could do 2 more</div>
+    </div>
+    <div class="rir-row mt-4">
+      <div class="rir-label">RIR 3+</div>
+      <div class="rir-bar" style="width:40%; background:#fce7f3;"></div>
+    </div>
+    <div class="rir-row">
+      <div class="rir-label" style="font-size:11px;"></div>
+      <div class="rir-desc">Too easy — not in the growth zone</div>
+    </div>
+  </div>
+
+  <div class="page-footer">cids.training — 8</div>
+</div>
+
+<!-- ==================== PAGE 9: INTENSITY — 4-Week Ramp-Up ==================== -->
+<div class="page page-intensity">
+  <h2 class="heading-intensity mb-4">INTENSITY</h2>
+  <h1>Your 4-Week Intensity Ramp-Up</h1>
+
+  <div class="target-box target-intensity mb-8">
+    <div class="metric">Target: Train at 0&ndash;2 RIR on all working sets</div>
+  </div>
+
+  <h3 class="heading-intensity">Week 1: Calibration</h3>
+  <ul class="small-text mb-8">
+    <li>On the LAST set of each exercise, go to actual failure (safely, with a spotter or on machines)</li>
+    <li>Count how many reps beyond your normal stopping point — this reveals your hidden reserve (typically 3&ndash;8 reps)</li>
+    <li>Record your estimated RIR vs actual for each exercise</li>
+    <li>Continue 4x/week schedule from Phase 1</li>
+    <li>This week is data collection, not ego — use moderate weights</li>
+  </ul>
+
+  <h3 class="heading-intensity">Week 2: Close the Gap (target 2&ndash;3 RIR)</h3>
+  <ul class="small-text mb-8">
+    <li>Use Week 1 data to recalibrate — add reps or weight to reach the 2&ndash;3 RIR zone</li>
+    <li>Begin motivational self-talk on the final 3&ndash;5 reps ("You've got this, two more")</li>
+    <li>Phone stays in the bag during all working sets</li>
+    <li>Continue last-set-to-failure on one exercise for ongoing calibration</li>
+  </ul>
+
+  <h3 class="heading-intensity">Week 3: Normalize Discomfort (target 1&ndash;2 RIR)</h3>
+  <ul class="small-text mb-8">
+    <li>Increase load ~5% on compound lifts OR add 1&ndash;2 reps per set</li>
+    <li>At least 2 sets per exercise should finish at 1 RIR</li>
+    <li>Practice associative focus: stay with the sensation instead of escaping it</li>
+    <li>Pre-commit to rep targets BEFORE the set — no mid-set negotiation</li>
+    <li>Use short cue words per rep: "Drive," "Push," "One more"</li>
+  </ul>
+
+  <h3 class="heading-intensity">Week 4: Full Intensity (target 0&ndash;2 RIR)</h3>
+  <ul class="small-text">
+    <li>Working sets: ~30% to failure, ~50% at 1 RIR, ~20% at 2 RIR</li>
+    <li>Self-talk and associative strategies should feel habitual</li>
+    <li>What felt like RPE 9 in Week 1 should feel like 7&ndash;8 at the same load — your tolerance has adapted</li>
+    <li><span class="bold">Plan a deload in Week 5</span> (reduce volume 40&ndash;50%, keep intensity moderate)</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 9</div>
+</div>
+
+<!-- ==================== PAGE 10: INTENSITY — Mistakes & Graduation ==================== -->
+<div class="page page-intensity">
+  <h2 class="heading-intensity mb-4">INTENSITY</h2>
+  <h1>Common Mistakes &amp; Graduation Checklist</h1>
+
+  <h3 class="mt-4 mb-6">Common Mistakes</h3>
+  <div class="card card-intensity">
+    <ul class="small-text" style="margin-bottom:0;">
+      <li>Ego lifting — heavy weight with bad form is not intensity, it's injury risk</li>
+      <li>Junk volume — 20 sets at RIR 5 is worse than 10 sets at RIR 1&ndash;2</li>
+      <li>Not tracking weights/reps — you can't know if you're progressing without data</li>
+      <li>Skipping deloads — planned recovery prevents unplanned recovery (injury)</li>
+      <li>Confusing soreness with effectiveness — DOMS &ne; growth stimulus</li>
+    </ul>
+  </div>
+
+  <h3 class="heading-intensity mt-8 mb-6">Graduation Checklist</h3>
+  <p class="caption mb-6">Move to Diet when ALL boxes are checked:</p>
+  <div class="card card-intensity">
+    <ul class="checklist small-text" style="margin-bottom:0;">
+      <li>You consistently train at 0&ndash;2 RIR on working sets</li>
+      <li>You can accurately estimate your RIR within 1&ndash;2 reps</li>
+      <li>You log your weights and reps every session</li>
+      <li>Discomfort during hard sets feels manageable, not terrifying</li>
+      <li>You've completed at least one deload week</li>
+    </ul>
+  </div>
+
+  <div class="section-divider mt-8"></div>
+
+  <h4 class="mt-6 mb-4" style="color: rgba(26,26,26,0.4); font-size: 11px;">REFERENCES</h4>
+  <ul class="ref-list">
+    <li data-num="1." style="padding-left:20px;">Marcora, S. (2014). Effort-based decision-making in exercise. <em>Sports Medicine</em>, 44(Suppl 1), S13&ndash;S21.</li>
+    <li data-num="2." style="padding-left:20px;">Steele, J. et al. (2017). Resistance training to momentary muscular failure. <em>PeerJ</em>, 5, e4105.</li>
+    <li data-num="3." style="padding-left:20px;">Zourdos, M. et al. (2016). Novel resistance training-specific RPE scale. <em>J Strength Cond Res</em>, 30(1), 267&ndash;275.</li>
+    <li data-num="4." style="padding-left:20px;">Refalo, M. et al. (2023). Influence of resistance training proximity-to-failure. <em>Sports Medicine</em>, 53, 649&ndash;665.</li>
+    <li data-num="5." style="padding-left:20px;">Blanchfield, A. et al. (2014). Talking yourself out of exhaustion. <em>Med Sci Sports Exerc</em>, 46(5), 998&ndash;1007.</li>
+    <li data-num="6." style="padding-left:20px;">Tesarz, J. et al. (2020). Pain perception and grit in athletes. <em>Frontiers in Psychology</em>, 11, 1908.</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 10</div>
+</div>
+
+<!-- ==================== PAGE 11: DIET — Why It's Pillar #3 ==================== -->
+<div class="page page-diet">
+  <h2 class="heading-diet mb-4">DIET</h2>
+  <h1>Why Diet Is Pillar #3</h1>
+
+  <p>You're consistent and training hard. Now give your body what it needs to actually build. The answer is simpler than the fitness industry wants you to believe: protein.</p>
+
+  <div class="card card-diet">
+    <h4 class="heading-diet mb-4">Not a Diet Plan — A Protein Plan</h4>
+    <p class="body-tight small-text">Total daily protein is the single strongest predictor of muscle gains. Everything else (timing, distribution, supplements) is secondary.</p>
+  </div>
+
+  <div class="target-box target-diet mb-8">
+    <div class="metric">The Number: 1g per pound of bodyweight (2g/kg) per day</div>
+    <p class="small-text mt-4" style="margin-bottom:0;">Nunes et al. (2022) — 1.6&ndash;2.2g/kg per day optimizes hypertrophy. We simplify to 1g per pound.</p>
+  </div>
+
+  <div class="card card-diet">
+    <h4 class="heading-diet mb-4">Timing Myth — Busted</h4>
+    <p class="body-tight small-text">Schoenfeld, Aragon &amp; Krieger (2013) meta-analyzed 23 studies — after controlling for total protein, timing effects on strength and hypertrophy disappeared entirely.</p>
+  </div>
+
+  <div class="card card-diet">
+    <h4 class="heading-diet mb-4">The Definitive Meta-Analysis</h4>
+    <p class="body-tight small-text">Morton et al. (2018, 49 studies, 1,863 participants) confirmed: benefits plateau at ~1.6g/kg/day. Hit your total daily number and you're covered.</p>
+  </div>
+
+  <div class="quote">"You don't do things right once in a while. You do things right all the time." — Vince Lombardi</div>
+
+  <div class="page-footer">cids.training — 11</div>
+</div>
+
+<!-- ==================== PAGE 12: DIET — The Science of Protein ==================== -->
+<div class="page page-diet">
+  <h2 class="heading-diet mb-4">DIET</h2>
+  <h1>The Science of Protein</h1>
+
+  <div class="card card-diet">
+    <h4 class="heading-diet mb-4">Per-Meal MPS Threshold</h4>
+    <p class="body-tight small-text">~0.4g/kg per meal across 3&ndash;4 meals. Mamerow et al. (2014) found even distribution produces <span class="bold">25% higher</span> 24-hour MPS than skewing toward dinner.</p>
+  </div>
+
+  <div class="card card-diet">
+    <h4 class="heading-diet mb-4">The Leucine Trigger</h4>
+    <p class="body-tight small-text">~2&ndash;3g leucine per meal activates MPS (roughly 25&ndash;30g quality protein). Zaromskyte et al. (2021) — more of a dose-response curve than a hard threshold for younger adults.</p>
+  </div>
+
+  <div class="target-box target-diet mb-8">
+    <div class="metric">Practical Rule: 30g+ protein from quality sources per meal</div>
+  </div>
+
+  <h3 class="heading-diet mb-6">Quick Reference — Daily Protein Targets</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Your Weight</th>
+        <th>Daily Protein Target</th>
+        <th>Per Meal (4 meals)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>130 lb / 59 kg</td><td>130g</td><td>~33g</td></tr>
+      <tr><td>150 lb / 68 kg</td><td>150g</td><td>~38g</td></tr>
+      <tr><td>180 lb / 82 kg</td><td>180g</td><td>~45g</td></tr>
+      <tr><td>200 lb / 91 kg</td><td>200g</td><td>~50g</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="heading-diet mb-6">Simple Protein Sources</h3>
+  <div class="protein-grid">
+    <div class="protein-item"><span>Chicken breast (6 oz)</span><span>54g</span></div>
+    <div class="protein-item"><span>Eggs (3 large)</span><span>18g</span></div>
+    <div class="protein-item"><span>Greek yogurt (1 cup)</span><span>20g</span></div>
+    <div class="protein-item"><span>Whey protein (1 scoop)</span><span>25g</span></div>
+    <div class="protein-item"><span>Tuna (1 can)</span><span>30g</span></div>
+    <div class="protein-item"><span>Cottage cheese (1 cup)</span><span>28g</span></div>
+    <div class="protein-item"><span>Ground beef (6 oz)</span><span>42g</span></div>
+    <div class="protein-item"><span>Tofu, firm (1 cup)</span><span>20g</span></div>
+  </div>
+
+  <div class="page-footer">cids.training — 12</div>
+</div>
+
+<!-- ==================== PAGE 13: DIET — 4-Week Protein Ramp-Up ==================== -->
+<div class="page page-diet">
+  <h2 class="heading-diet mb-4">DIET</h2>
+  <h1>Your 4-Week Protein Ramp-Up</h1>
+
+  <div class="target-box target-diet mb-8">
+    <div class="metric">Target: Hit your daily protein goal 5 out of 7 days</div>
+  </div>
+
+  <h3 class="heading-diet">Week 1: Awareness</h3>
+  <ul class="small-text mb-8">
+    <li>Track everything you eat for 7 days (MyFitnessPal, notebook, photos — whatever works)</li>
+    <li>Don't change anything — just observe</li>
+    <li>At the end of the week, calculate your average daily protein</li>
+    <li>Most beginners discover they're eating 60&ndash;80g when they need 150&ndash;180g</li>
+    <li>The gap is your roadmap</li>
+  </ul>
+
+  <h3 class="heading-diet">Week 2: Fix Breakfast</h3>
+  <ul class="small-text mb-8">
+    <li>Breakfast is the biggest protein gap for most people (toast, cereal, fruit = near-zero protein)</li>
+    <li>New default: 30&ndash;40g protein at breakfast (eggs + Greek yogurt, protein shake + oats, etc.)</li>
+    <li>Pick 2&ndash;3 breakfast options and rotate — don't overthink it</li>
+    <li>Continue tracking protein only (not calories, carbs, or fat)</li>
+  </ul>
+
+  <h3 class="heading-diet">Week 3: Fix Lunch + Dinner</h3>
+  <ul class="small-text mb-8">
+    <li>Anchor every meal around a protein source FIRST, then add everything else</li>
+    <li>Simple rule: palm-sized portion of protein at every meal = roughly 30g</li>
+    <li>Add a 4th protein hit if needed (pre-bed Greek yogurt, protein shake, cottage cheese)</li>
+    <li>You should be hitting your target most days now</li>
+  </ul>
+
+  <h3 class="heading-diet">Week 4: Fine-Tune and Automate</h3>
+  <ul class="small-text">
+    <li>Review your tracking: hitting 5/7 days at target?</li>
+    <li>Identify your go-to meals — the 5&ndash;6 meals you rotate through that always hit protein</li>
+    <li>Start meal prepping: 2 hours on Sunday saves you all week</li>
+    <li>Stop obsessive tracking — you know your defaults now, trust them</li>
+    <li>Only re-track if you change your routine significantly</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 13</div>
+</div>
+
+<!-- ==================== PAGE 14: DIET — Mistakes & Graduation ==================== -->
+<div class="page page-diet">
+  <h2 class="heading-diet mb-4">DIET</h2>
+  <h1>Common Mistakes &amp; Graduation Checklist</h1>
+
+  <h3 class="mt-4 mb-6">Common Mistakes</h3>
+  <div class="card card-diet">
+    <ul class="small-text" style="margin-bottom:0;">
+      <li>Overthinking it — protein first, the rest follows</li>
+      <li>Relying entirely on shakes (whole food protein is more satiating)</li>
+      <li>Undercounting: not weighing/measuring initially, then overestimating</li>
+      <li>Trying to overhaul everything at once (just fix protein, not your entire diet)</li>
+      <li>Skipping meals then trying to get 100g at dinner</li>
+    </ul>
+  </div>
+
+  <h3 class="heading-diet mt-8 mb-6">Graduation Checklist</h3>
+  <p class="caption mb-6">Move to Sleep when ALL boxes are checked:</p>
+  <div class="card card-diet">
+    <ul class="checklist small-text" style="margin-bottom:0;">
+      <li>You know your daily protein target and can hit it 5/7 days</li>
+      <li>You have 5&ndash;6 default meals that reliably hit 30g+ protein each</li>
+      <li>You can eyeball a protein portion without weighing it</li>
+      <li>Breakfast includes 30g+ protein as a habit</li>
+      <li>You've maintained this for at least 3 consecutive weeks</li>
+    </ul>
+  </div>
+
+  <div class="section-divider mt-8"></div>
+
+  <h4 class="mt-6 mb-4" style="color: rgba(26,26,26,0.4); font-size: 11px;">REFERENCES</h4>
+  <ul class="ref-list">
+    <li data-num="1." style="padding-left:20px;">Nunes, E. et al. (2022). Systematic review and meta-analysis of protein intake for muscle gains. <em>J Cachexia, Sarcopenia and Muscle</em>, 13(2), 795&ndash;810.</li>
+    <li data-num="2." style="padding-left:20px;">Schoenfeld, B., Aragon, A. &amp; Krieger, J. (2013). The effect of protein timing on muscle strength and hypertrophy. <em>JISSN</em>, 10, 53.</li>
+    <li data-num="3." style="padding-left:20px;">Morton, R. et al. (2018). A systematic review of protein supplementation. <em>British Journal of Sports Medicine</em>, 52(6), 376&ndash;384.</li>
+    <li data-num="4." style="padding-left:20px;">Mamerow, M. et al. (2014). Dietary protein distribution and muscle protein synthesis. <em>Journal of Nutrition</em>, 144(6), 876&ndash;880.</li>
+    <li data-num="5." style="padding-left:20px;">Zaromskyte, G. et al. (2021). Evaluating the leucine trigger hypothesis. <em>Frontiers in Nutrition</em>, 8, 685165.</li>
+    <li data-num="6." style="padding-left:20px;">Schoenfeld, B. &amp; Aragon, A. (2018). How much protein can the body use per meal? <em>JISSN</em>, 15, 10.</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 14</div>
+</div>
+
+<!-- ==================== PAGE 15: SLEEP — Why It's Pillar #4 ==================== -->
+<div class="page page-sleep">
+  <h2 class="heading-sleep mb-4">SLEEP</h2>
+  <h1>Why Sleep Is Pillar #4</h1>
+
+  <p>You're doing the work. You're eating right. Now let your body do what it does best: rebuild. Muscle isn't built in the gym — it's built while you sleep.</p>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">Sleep Deprivation Impairs Muscle Growth</h4>
+    <p class="body-tight small-text">Lamon et al. (2021) — one night of sleep deprivation reduced MPS by <span class="bold">18%</span>, increased cortisol 21%, decreased testosterone 24%. Sleep loss directly attacks the biology of muscle growth.</p>
+  </div>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">Sleep Extension Boosts Performance</h4>
+    <p class="body-tight small-text">Mah et al. (2011) — Stanford basketball players who extended sleep to 10 hours improved sprint times ~5%, free-throw accuracy +9%. More sleep = better performance, full stop.</p>
+  </div>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">Regularity Beats Duration</h4>
+    <p class="body-tight small-text">Windred et al. (2024, 60,977 participants) — sleep <span class="bold">regularity</span> was a stronger predictor of all-cause mortality than sleep duration. Regular sleepers had 20&ndash;48% lower mortality risk.</p>
+  </div>
+
+  <div class="quote">"Hard work, dedication, and discipline separate the best from the rest." — Kobe Bryant</div>
+
+  <div class="page-footer">cids.training — 15</div>
+</div>
+
+<!-- ==================== PAGE 16: SLEEP — The Science of Recovery Sleep ==================== -->
+<div class="page page-sleep">
+  <h2 class="heading-sleep mb-4">SLEEP</h2>
+  <h1>The Science of Recovery Sleep</h1>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">Deep Sleep (N3)</h4>
+    <p class="body-tight small-text">~70% of daily growth hormone is secreted during deep sleep (Dattilo et al., 2011). Deep sleep dominates the first half of the night — early bedtime matters.</p>
+  </div>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">REM Sleep</h4>
+    <p class="body-tight small-text">Dominates the second half of the night. Cutting sleep short disproportionately kills REM. UC Berkeley (2025): Both REM and non-REM contribute to GH release through different mechanisms — you need both.</p>
+  </div>
+
+  <div class="card card-sleep">
+    <h4 class="heading-sleep mb-4">Pre-Sleep Protein Works</h4>
+    <p class="body-tight small-text">Res et al. (2012) — 40g casein before bed increases overnight MPS. Your body actively builds muscle while you sleep IF you've given it protein.</p>
+  </div>
+
+  <h3 class="heading-sleep mt-6 mb-6">What Actually Works (Research-Ranked)</h3>
+
+  <div class="target-box target-sleep mb-4">
+    <p class="small-text" style="margin-bottom:0;"><span class="bold">1. Consistent schedule</span> (strongest evidence) — Windred et al. (2024). Regularity is the #1 factor.</p>
+  </div>
+
+  <div class="target-box target-sleep mb-4">
+    <p class="small-text" style="margin-bottom:0;"><span class="bold">2. Caffeine cutoff</span> (strongest for sleep quality) — Gardiner et al. (2023) meta-analysis: caffeine reduces total sleep 45 min, deep sleep 11 min. Cutoff: <span class="bold">8.8 hours</span> before bed for standard coffee, <span class="bold">13.2 hours</span> for pre-workout.</p>
+  </div>
+
+  <div class="target-box target-sleep mb-4">
+    <p class="small-text" style="margin-bottom:0;"><span class="bold">3. Room temperature</span> (moderate evidence) — 18&ndash;21&deg;C / 65&ndash;70&deg;F optimal.</p>
+  </div>
+
+  <div class="target-box target-sleep mb-4">
+    <p class="small-text" style="margin-bottom:0;"><span class="bold">4. Blue light blocking</span> (mixed evidence) — trend toward benefit but didn't reach significance in meta-analysis. Useful but not transformative.</p>
+  </div>
+
+  <div class="page-footer">cids.training — 16</div>
+</div>
+
+<!-- ==================== PAGE 17: SLEEP — 4-Week Ramp-Up ==================== -->
+<div class="page page-sleep">
+  <h2 class="heading-sleep mb-4">SLEEP</h2>
+  <h1>Your 4-Week Sleep Ramp-Up</h1>
+
+  <div class="target-box target-sleep mb-8">
+    <div class="metric">Target: 7+ hours of consistent, quality sleep per night</div>
+  </div>
+
+  <h3 class="heading-sleep">Week 1: Assess + Caffeine Fix</h3>
+  <ul class="small-text mb-8">
+    <li>Track your sleep for 7 days: what time you go to bed, what time you wake up, how you feel (1&ndash;5)</li>
+    <li>Calculate your average — most people discover they're getting 5.5&ndash;6.5 hours</li>
+    <li>Implement caffeine cutoff: no coffee/pre-workout after 2pm (or 9 hours before target bedtime)</li>
+    <li>This one change alone can add 30&ndash;45 minutes of quality sleep</li>
+    <li>Don't change anything else yet</li>
+  </ul>
+
+  <h3 class="heading-sleep">Week 2: Anchor Your Wake Time</h3>
+  <ul class="small-text mb-8">
+    <li>Pick a wake time and stick to it 7 days a week — yes, weekends too</li>
+    <li>This is more important than bedtime (Windred et al., 2024)</li>
+    <li>Your body will naturally start getting tired earlier once the wake time is consistent</li>
+    <li>Continue tracking sleep hours and quality rating</li>
+    <li>Expect the first few days to feel rough if your weekend wake time was 2+ hours later</li>
+  </ul>
+
+  <h3 class="heading-sleep">Week 3: Optimize Environment + Set Bedtime</h3>
+  <ul class="small-text mb-8">
+    <li>Set bedroom temperature to 18&ndash;21&deg;C / 65&ndash;70&deg;F</li>
+    <li>Blackout curtains or sleep mask</li>
+    <li>Set a consistent bedtime that gives you 7.5&ndash;8 hours before your anchor wake time</li>
+    <li>Phone on charger in another room by 30 minutes before bedtime</li>
+    <li>Optional: 30&ndash;40g casein protein before bed (Res et al., 2012)</li>
+  </ul>
+
+  <h3 class="heading-sleep">Week 4: Fine-Tune</h3>
+  <ul class="small-text">
+    <li>Review your tracking: averaging 7+ hours? Quality rating improving?</li>
+    <li>Address remaining disruptors: alcohol (even 1&ndash;2 drinks reduces deep sleep), late heavy meals, blue light</li>
+    <li>If you're lying awake &gt;20 minutes, get up and do something boring — don't scroll</li>
+    <li>Your sleep should feel noticeably better than Week 1</li>
+    <li>This is now maintenance — protect these habits the way you protect your gym schedule</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 17</div>
+</div>
+
+<!-- ==================== PAGE 18: SLEEP — Mistakes & Graduation ==================== -->
+<div class="page page-sleep">
+  <h2 class="heading-sleep mb-4">SLEEP</h2>
+  <h1>Common Mistakes &amp; Graduation Checklist</h1>
+
+  <h3 class="mt-4 mb-6">Common Mistakes</h3>
+  <div class="card card-sleep">
+    <ul class="small-text" style="margin-bottom:0;">
+      <li>Sleeping in on weekends (destroys regularity — the single most important factor)</li>
+      <li>"I'll sleep when I'm dead" mentality (sleep deprivation literally reduces muscle growth by 18%)</li>
+      <li>Relying on supplements (melatonin masks the problem, doesn't fix it)</li>
+      <li>Screen time in bed (the bed is for sleep, not scrolling)</li>
+      <li>Ignoring caffeine timing (that 3pm coffee is costing you 45 minutes of sleep)</li>
+    </ul>
+  </div>
+
+  <h3 class="heading-sleep mt-8 mb-6">Graduation Checklist</h3>
+  <p class="caption mb-6">You've completed CIDS when ALL boxes are checked:</p>
+  <div class="card card-sleep">
+    <ul class="checklist small-text" style="margin-bottom:0;">
+      <li>You average 7+ hours of sleep per night</li>
+      <li>Your bedtime and wake time are consistent within 30 minutes, 7 days/week</li>
+      <li>You fall asleep within 15&ndash;20 minutes of lying down</li>
+      <li>You wake up feeling functional without hitting snooze</li>
+      <li>You've maintained this for at least 3 consecutive weeks</li>
+    </ul>
+  </div>
+
+  <div class="section-divider mt-8"></div>
+
+  <h4 class="mt-6 mb-4" style="color: rgba(26,26,26,0.4); font-size: 11px;">REFERENCES</h4>
+  <ul class="ref-list">
+    <li data-num="1." style="padding-left:20px;">Lamon, S. et al. (2021). The effect of acute sleep deprivation on skeletal muscle protein synthesis. <em>Physiological Reports</em>, 9(1), e14660.</li>
+    <li data-num="2." style="padding-left:20px;">Mah, C. et al. (2011). The effects of sleep extension on athletic performance. <em>Sleep</em>, 34(7), 943&ndash;950.</li>
+    <li data-num="3." style="padding-left:20px;">Windred, D. et al. (2024). Sleep regularity and mortality risk. <em>Sleep</em>, 47(1), zsad253.</li>
+    <li data-num="4." style="padding-left:20px;">Dattilo, M. et al. (2011). Sleep and muscle recovery. <em>Medical Hypotheses</em>, 77(2), 220&ndash;222.</li>
+    <li data-num="5." style="padding-left:20px;">Gardiner, C. et al. (2023). The effect of caffeine on sleep. <em>Sleep Medicine Reviews</em>, 69, 101764.</li>
+    <li data-num="6." style="padding-left:20px;">Res, P. et al. (2012). Protein ingestion before sleep. <em>Medicine &amp; Science in Sports &amp; Exercise</em>, 44(8), 1560&ndash;1569.</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 18</div>
+</div>
+
+<!-- ==================== PAGE 19: YOUR CIDS TIMELINE ==================== -->
+<div class="page">
+  <h1 style="margin-bottom:6px;">Your CIDS Timeline</h1>
+  <p class="caption mb-12">The full journey — 18 weeks to build all four pillars</p>
+
+  <div class="timeline-item">
+    <div class="timeline-bar" style="background: #6366f1;"></div>
+    <div class="timeline-content">
+      <div class="timeline-weeks">WEEKS 1&ndash;6</div>
+      <div class="timeline-title" style="color: #6366f1;">Consistency — Show Up</div>
+      <div class="timeline-desc">Build the gym habit. 4x per week, every week. Start small. Track attendance only. Don't optimize anything yet — just show up until it's automatic.</div>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-bar" style="background: #ec4899;"></div>
+    <div class="timeline-content">
+      <div class="timeline-weeks">WEEKS 7&ndash;10</div>
+      <div class="timeline-title" style="color: #ec4899;">Intensity — Push Hard</div>
+      <div class="timeline-desc">Calibrate your effort. Learn to train at 0&ndash;2 RIR. Close the gap between perceived and actual failure. Build discomfort tolerance through practice.</div>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-bar" style="background: #f59e0b;"></div>
+    <div class="timeline-content">
+      <div class="timeline-weeks">WEEKS 11&ndash;14</div>
+      <div class="timeline-title" style="color: #f59e0b;">Diet — Eat Right</div>
+      <div class="timeline-desc">Nail your protein. Track for a week, fix breakfast, fix lunch and dinner, then automate. 1g per pound, 30g+ per meal, 5/7 days on target.</div>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-bar" style="background: #06b6d4;"></div>
+    <div class="timeline-content">
+      <div class="timeline-weeks">WEEKS 15&ndash;18</div>
+      <div class="timeline-title" style="color: #06b6d4;">Sleep — Rest Well</div>
+      <div class="timeline-desc">Optimize recovery. Cut caffeine early, anchor your wake time, set your environment, fine-tune. 7+ hours, consistent schedule, 7 days a week.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px; background:#f8f8f8; text-align:center; padding:16px;">
+    <p style="font-size:14px; font-weight:800; color:#1a1a1a; margin-bottom:4px;">After Week 18, you have all four pillars in place.</p>
+    <p style="font-size:14px; color:rgba(26,26,26,0.5); margin-bottom:0;">Now it's maintenance. The rest is noise.</p>
+  </div>
+
+  <div class="target-box" style="background:rgba(26,26,26,0.03); border-left:2px solid #e0e0e0; margin-top:12px;">
+    <p class="small-text" style="margin-bottom:0; font-weight:600; color:rgba(26,26,26,0.6);">Key principle: Don't skip ahead. Each pillar builds on the last. Consistency before intensity. Intensity before diet. Diet before sleep.</p>
+  </div>
+
+  <div class="page-footer">cids.training — 19</div>
+</div>
+
+<!-- ==================== PAGE 20: QUICK REFERENCE CARD ==================== -->
+<div class="page" style="display:flex; flex-direction:column; justify-content:center;">
+  <h1 style="text-align:center; margin-bottom:4px;">Quick Reference Card</h1>
+  <p class="caption" style="text-align:center; margin-bottom:20px;">Screenshot this page or print it</p>
+
+  <table class="qr-table" style="margin-bottom:24px;">
+    <thead>
+      <tr>
+        <th>Pillar</th>
+        <th>Target</th>
+        <th>Key Rule</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:#6366f1;">Consistency</td>
+        <td style="font-weight:600;">4x / week</td>
+        <td>Show up before you optimize</td>
+      </tr>
+      <tr>
+        <td style="color:#ec4899;">Intensity</td>
+        <td style="font-weight:600;">&lt;2 RIR</td>
+        <td>Your brain quits before your body does</td>
+      </tr>
+      <tr>
+        <td style="color:#f59e0b;">Diet</td>
+        <td style="font-weight:600;">1g/lb / 2g/kg protein</td>
+        <td>Total daily protein is all that matters</td>
+      </tr>
+      <tr>
+        <td style="color:#06b6d4;">Sleep</td>
+        <td style="font-weight:600;">7+ hrs / night</td>
+        <td>Regularity beats duration</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center; margin-top:24px;">
+    <div style="font-style:italic; font-size:18px; color:rgba(26,26,26,0.3); margin-bottom:12px;">The rest is noise.</div>
+    <div style="font-size:13px; font-weight:600; color:rgba(26,26,26,0.3); letter-spacing:1px;">cids.training</div>
+  </div>
+
+  <div class="page-footer">cids.training — 20</div>
+</div>
+
+<!-- ==================== PAGE 21: REFERENCES (1/2) ==================== -->
+<div class="page">
+  <h1 style="margin-bottom:6px;">References</h1>
+  <p class="caption mb-12">Full citations for all research cited in this guide</p>
+
+  <div class="ref-section-heading heading-consistency">Consistency</div>
+  <ul class="ref-list">
+    <li data-num="1." style="padding-left:20px;">Lally, P., van Jaarsveld, C.H.M., Potts, H.W.W. &amp; Wardle, J. (2010). How are habits formed: Modelling habit formation in the real world. <em>European Journal of Social Psychology</em>, 40(6), 998&ndash;1009. Key finding: exercise habits take a median of 91 days to form, range 18&ndash;254 days.</li>
+    <li data-num="2." style="padding-left:20px;">Kaushal, N. &amp; Rhodes, R.E. (2015). Exercise habit formation in new gym members: a longitudinal study. <em>Journal of Behavioral Medicine</em>, 38, 652&ndash;663. Key finding: attendance in first 4 weeks predicts long-term adherence; 1+ extra session/week = 3x more likely to stick.</li>
+    <li data-num="3." style="padding-left:20px;">Schoenfeld, B.J., Ogborn, D. &amp; Krieger, J.W. (2016). Effects of resistance training frequency on measures of muscle hypertrophy: a systematic review and meta-analysis. <em>Journal of Sports Sciences</em>, 34(16), 1523&ndash;1532. Key finding: 2x/week superior to 1x for hypertrophy at equal volume.</li>
+    <li data-num="4." style="padding-left:20px;">Gollwitzer, P.M. &amp; Brandst&auml;tter, V. (1997). Implementation intentions and effective goal pursuit. <em>Journal of Personality and Social Psychology</em>, 73(1), 186&ndash;199. Key finding: "if-then" planning increases goal completion rates by ~3x.</li>
+    <li data-num="5." style="padding-left:20px;">Fogg, B.J. <em>Tiny Habits: The Small Changes That Change Everything</em>. Stanford Behavior Design Lab. Key finding: B = MAP model — behavior occurs when motivation, ability, and prompt converge.</li>
+  </ul>
+
+  <div class="ref-section-heading heading-intensity" style="margin-top:16px;">Intensity</div>
+  <ul class="ref-list">
+    <li data-num="6." style="padding-left:20px;">Marcora, S.M. (2014). Effort-based decision-making in the regulation of physical activity. <em>Sports Medicine</em>, 44(Suppl 1), S13&ndash;S21. Key finding: at subjective exhaustion, muscles can still produce 3x required power output.</li>
+    <li data-num="7." style="padding-left:20px;">Steele, J. et al. (2017). Resistance training to momentary muscular failure improves cardiovascular fitness in humans. <em>PeerJ</em>, 5, e4105. Key finding: people underpredicted their capacity by 2.6&ndash;3.4 reps.</li>
+    <li data-num="8." style="padding-left:20px;">Zourdos, M.C. et al. (2016). Novel resistance training-specific rating of perceived exertion scale measuring repetitions in reserve. <em>J Strength Cond Res</em>, 30(1), 267&ndash;275. Key finding: novices underestimate capacity by 4&ndash;5 reps.</li>
+    <li data-num="9." style="padding-left:20px;">Refalo, M.C. et al. (2023). Influence of resistance training proximity-to-failure on skeletal muscle hypertrophy. <em>Sports Medicine</em>, 53, 649&ndash;665. Key finding: training within 0&ndash;3 RIR sufficient for hypertrophy.</li>
+    <li data-num="10." style="padding-left:20px;">Blanchfield, A.W. et al. (2014). Talking yourself out of exhaustion: the effects of self-talk on endurance performance. <em>Med Sci Sports Exerc</em>, 46(5), 998&ndash;1007. Key finding: motivational self-talk improved endurance by 18%.</li>
+    <li data-num="11." style="padding-left:20px;">Tesarz, J. et al. (2020). Pain perception and athletic identity in endurance athletes: the role of grit and fear of pain. <em>Frontiers in Psychology</em>, 11, 1908. Key finding: grit strongest predictor of high pain tolerance; fear strongest predictor of low tolerance.</li>
+  </ul>
+
+  <div class="page-footer">cids.training — 21</div>
+</div>
+
+<!-- ==================== PAGE 22: REFERENCES (2/2) ==================== -->
+<div class="page">
+  <h1 style="margin-bottom:6px;">References <span style="font-weight:400; font-size:16px; color:rgba(26,26,26,0.4);">(continued)</span></h1>
+  <p class="caption mb-12">&nbsp;</p>
+
+  <div class="ref-section-heading heading-diet">Diet</div>
+  <ul class="ref-list">
+    <li data-num="12." style="padding-left:20px;">Nunes, E.A. et al. (2022). Systematic review and meta-analysis of protein intake and resistance training on muscle mass, strength, and body composition. <em>J Cachexia, Sarcopenia and Muscle</em>, 13(2), 795&ndash;810. Key finding: 1.6&ndash;2.2g/kg/day optimizes hypertrophy in resistance-trained individuals.</li>
+    <li data-num="13." style="padding-left:20px;">Schoenfeld, B.J., Aragon, A.A. &amp; Krieger, J.W. (2013). The effect of protein timing on muscle strength and hypertrophy: a meta-analysis. <em>JISSN</em>, 10, 53. Key finding: after controlling for total protein intake, timing effects disappeared entirely.</li>
+    <li data-num="14." style="padding-left:20px;">Morton, R.W. et al. (2018). A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains. <em>British Journal of Sports Medicine</em>, 52(6), 376&ndash;384. Key finding: benefits plateau at ~1.6g/kg/day (49 studies, 1,863 participants).</li>
+    <li data-num="15." style="padding-left:20px;">Mamerow, M.M. et al. (2014). Dietary protein distribution positively influences 24-h muscle protein synthesis. <em>Journal of Nutrition</em>, 144(6), 876&ndash;880. Key finding: even protein distribution = 25% higher 24-hour MPS vs dinner-skewed.</li>
+    <li data-num="16." style="padding-left:20px;">Zaromskyte, G. et al. (2021). Evaluating the leucine trigger hypothesis to explain the post-prandial regulation of muscle protein synthesis. <em>Frontiers in Nutrition</em>, 8, 685165. Key finding: dose-response curve rather than hard threshold in younger adults.</li>
+    <li data-num="17." style="padding-left:20px;">Schoenfeld, B.J. &amp; Aragon, A.A. (2018). How much protein can the body use in a single meal for muscle-building? <em>JISSN</em>, 15, 10.</li>
+  </ul>
+
+  <div class="ref-section-heading heading-sleep" style="margin-top:16px;">Sleep</div>
+  <ul class="ref-list">
+    <li data-num="18." style="padding-left:20px;">Lamon, S. et al. (2021). The effect of acute sleep deprivation on skeletal muscle protein synthesis and the hormonal environment. <em>Physiological Reports</em>, 9(1), e14660. Key finding: one night of sleep deprivation reduced MPS 18%, increased cortisol 21%, decreased testosterone 24%.</li>
+    <li data-num="19." style="padding-left:20px;">Mah, C.D. et al. (2011). The effects of sleep extension on the athletic performance of collegiate basketball players. <em>Sleep</em>, 34(7), 943&ndash;950. Key finding: sleep extension to 10 hrs improved sprint times ~5%, free-throw accuracy +9%.</li>
+    <li data-num="20." style="padding-left:20px;">Windred, D.P. et al. (2024). Sleep regularity is a stronger predictor of mortality risk than sleep duration: a prospective cohort study. <em>Sleep</em>, 47(1), zsad253. Key finding: regular sleepers had 20&ndash;48% lower all-cause mortality (60,977 participants).</li>
+    <li data-num="21." style="padding-left:20px;">Dattilo, M. et al. (2011). Sleep and muscle recovery: endocrinological and molecular basis for a new and promising hypothesis. <em>Medical Hypotheses</em>, 77(2), 220&ndash;222. Key finding: ~70% of daily GH secreted during deep sleep (N3).</li>
+    <li data-num="22." style="padding-left:20px;">Gardiner, C. et al. (2023). The effect of caffeine on subsequent sleep: a systematic review and meta-analysis. <em>Sleep Medicine Reviews</em>, 69, 101764. Key finding: caffeine reduces total sleep 45 min, deep sleep 11 min; 8.8-hr cutoff for coffee, 13.2-hr for pre-workout.</li>
+    <li data-num="23." style="padding-left:20px;">Res, P.T. et al. (2012). Protein ingestion before sleep improves postexercise overnight recovery. <em>Medicine &amp; Science in Sports &amp; Exercise</em>, 44(8), 1560&ndash;1569. Key finding: 40g casein pre-sleep increases overnight MPS.</li>
+  </ul>
+
+  <div style="text-align:center; margin-top:24px;">
+    <div style="font-size:13px; font-weight:600; color:rgba(26,26,26,0.3); letter-spacing:1px;">cids.training</div>
+  </div>
+
+  <div class="page-footer">cids.training — 22</div>
+</div>
+
+</body>
+</html>
