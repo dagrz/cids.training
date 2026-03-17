@@ -25,7 +25,7 @@ export function Transformations() {
         {TESTIMONIALS.map((t, i) => (
           <div
             key={i}
-            className="rounded-xl overflow-hidden bg-cids-bg-card border border-white/5"
+            className="rounded-xl overflow-hidden bg-cids-bg-card" style={{ border: '3px solid rgba(255,255,255,0.15)' }}
           >
             <div className="relative h-36">
               <Image src={t.image} alt="" fill className="object-cover" />

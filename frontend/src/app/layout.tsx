@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'CIDS — Consistency, Intensity, Diet, Sleep',
-  description: 'The only training framework you need. Show Up. Push Hard. Eat Right. Rest Well. Everything else is optimization.',
+  description: 'The only training framework you need. Show Up. Push Hard. Eat Right. Rest Well. The rest is noise.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

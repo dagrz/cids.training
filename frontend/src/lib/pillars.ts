@@ -26,7 +26,7 @@ export const PILLARS: Pillar[] = [
       'I show up like clockwork, no excuses',
     ],
     resultCopy: "Your priority: Consistency. Nothing else matters until you're showing up.",
-    resultTip: "Commit to 3 days this week. Any 3 days. Put them in your calendar right now. Don't think about what you'll do — just show up.",
+    resultTip: "Commit to 4 days this week. Put them in your calendar right now. Don't think about what you'll do — just show up.",
   },
   {
     id: 'I', number: '02', name: 'Intensity', tagline: 'Push Hard',
@@ -39,7 +39,7 @@ export const PILLARS: Pillar[] = [
       'I grunt, sweat through my shirt, question my life choices',
     ],
     resultCopy: "Your priority: Intensity. You're showing up — now make it count.",
-    resultTip: 'Next session: put your phone in your bag. Set a timer for rest periods. When the timer goes off, you go. No scrolling.',
+    resultTip: "Every set should finish with less than 2 reps in reserve. If you could have done 3 more, it wasn't hard enough. Phone in the bag.",
   },
   {
     id: 'D', number: '03', name: 'Diet', tagline: 'Eat Right',
@@ -52,7 +52,7 @@ export const PILLARS: Pillar[] = [
       'I track my macros and eat to fuel my training',
     ],
     resultCopy: "Your priority: Diet. You're doing the work — now fuel it.",
-    resultTip: 'This week: track your protein for 3 days. Just protein, nothing else. Know your number. Aim for 1g per pound of bodyweight.',
+    resultTip: "Hit 1g of protein per pound of bodyweight (2g per kg) every day this week. Track it. That's it — just protein. The rest follows.",
   },
   {
     id: 'S', number: '04', name: 'Sleep', tagline: 'Rest Well',
@@ -65,7 +65,7 @@ export const PILLARS: Pillar[] = [
       'Eyes open before the alarm, ready to go',
     ],
     resultCopy: "Your priority: Sleep. You're earning it — now let your body rebuild.",
-    resultTip: 'Tonight: phone on the charger in another room by 10pm. No negotiation. Do it for 5 nights straight and feel the difference.',
+    resultTip: "Get 7+ hours every night this week. Phone on the charger in another room by 10pm. No negotiation. Your gains happen while you sleep.",
   },
 ];
 

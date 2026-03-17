@@ -1,6 +1,5 @@
 const BENEFITS = [
   { icon: '📱', title: 'Daily nudge', desc: 'One message following the CIDS framework' },
-  { icon: '📊', title: 'Self-assessment', desc: 'Know exactly which pillar to focus on' },
   { icon: '📖', title: 'CIDS Framework Guide', desc: 'Free PDF — everything you need on one page per pillar' },
   { icon: '👊', title: 'Accountability', desc: 'We follow up. We check in. We keep you honest.' },
 ];

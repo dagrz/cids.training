@@ -12,7 +12,7 @@ export function Footer() {
         <a href="#" className="hover:text-white/50">Contact</a>
       </div>
       <p className="text-[10px] text-white/20 mt-3">
-        © 2026 CIDS Training. Everything else is optimization.
+        © 2026 CIDS Training. The rest is noise.
       </p>
     </footer>
   );

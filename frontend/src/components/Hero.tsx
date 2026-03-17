@@ -5,11 +5,11 @@ import { AnimateIn } from './AnimateIn';
 
 export function Hero() {
   return (
-    <section className="px-4 py-8 text-center">
-      <h1 className="text-6xl font-black tracking-tighter leading-none">
+    <section className="px-4 py-8">
+      <h1 className="text-6xl font-black tracking-tighter leading-none text-center">
         CIDS
       </h1>
-      <p className="text-xs tracking-[4px] text-white/30 uppercase mt-1 mb-6">
+      <p className="text-xs tracking-[4px] text-white/30 uppercase mt-1 mb-6 text-center">
         Training Framework
       </p>
 
@@ -21,11 +21,11 @@ export function Hero() {
         ))}
       </div>
 
-      <p className="text-sm text-white/40 italic mb-6">
-        Everything else is optimization.
+      <p className="text-sm text-white/40 italic mb-6 text-center">
+        The rest is noise.
       </p>
 
-      <div className="rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ border: '3px solid rgba(255,255,255,0.15)' }}>
         <Image
           src="/images/hero-deadlift.jpg"
           alt="Person training with focus and determination"
