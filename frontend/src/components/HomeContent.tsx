@@ -8,7 +8,6 @@ import { WhyOrder } from './WhyOrder';
 import { Gallery } from './Gallery';
 import { Assessment } from './Assessment';
 import { SignupForm } from './SignupForm';
-import { WhatYouGet } from './WhatYouGet';
 import { Transformations } from './Transformations';
 import { Footer } from './Footer';
 import type { AssessmentAnswers } from '@/lib/scoring';
@@ -24,7 +23,6 @@ export function HomeContent() {
       <Gallery />
       <Assessment onComplete={setAssessmentResult} />
       <SignupForm assessmentResult={assessmentResult} />
-      <WhatYouGet />
       <Transformations />
       <Footer />
     </>

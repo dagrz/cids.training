@@ -60,7 +60,7 @@ export function SignupForm({ assessmentResult }: SignupFormProps) {
         Get Your Free CIDS Guide
       </h2>
       <p className="text-sm text-white/40 mb-4">
-        Personalized to your assessment results. Plus every week you get:
+        The complete framework in one guide. Plus every week you get:
       </p>
 
       <ul className="text-sm text-white/50 mb-5 space-y-2">
@@ -70,7 +70,7 @@ export function SignupForm({ assessmentResult }: SignupFormProps) {
         </li>
         <li className="flex items-start gap-2">
           <span className="text-white/30 mt-0.5">→</span>
-          <span>Advice that evolves as you level up through CIDS</span>
+          <span>Personalized advice based on where you are in CIDS</span>
         </li>
         <li className="flex items-start gap-2">
           <span className="text-white/30 mt-0.5">→</span>
