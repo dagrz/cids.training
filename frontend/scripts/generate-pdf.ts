@@ -2,8 +2,10 @@ import { chromium } from 'playwright';
 import path from 'path';
 
 async function generatePDF() {
+  // Generate from the current version (cids-guide.html)
+  // v1 backup: cids-guide-v1.html / cids-framework-guide-v1.pdf
   const htmlPath = path.resolve(__dirname, '../src/pdf/cids-guide.html');
-  const outputPath = path.resolve(__dirname, '../public/cids-framework-guide.pdf');
+  const outputPath = path.resolve(__dirname, '../public/cids-framework-guide-v2.pdf');
 
   console.log('Launching browser...');
   const browser = await chromium.launch();
@@ -18,7 +20,8 @@ async function generatePDF() {
   console.log(`Generating PDF to: ${outputPath}`);
   await page.pdf({
     path: outputPath,
-    format: 'A5',
+    width: '100mm',
+    height: '178mm',
     printBackground: true,
     margin: { top: '0', bottom: '0', left: '0', right: '0' },
   });

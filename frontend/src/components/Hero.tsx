@@ -22,7 +22,7 @@ export function Hero() {
       </div>
 
       <p className="text-sm text-white/40 italic mb-6 text-center">
-        The rest is noise.
+        Building muscle should be simple, not easy.
       </p>
 
       <div className="rounded-xl overflow-hidden" style={{ border: '3px solid rgba(255,255,255,0.15)' }}>
