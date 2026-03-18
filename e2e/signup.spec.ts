@@ -28,8 +28,6 @@ test.describe('CIDS.training', () => {
     await page.locator('#signup').scrollIntoViewIfNeeded();
 
     await page.fill('input[placeholder="Your email"]', 'bad-email');
-    await page.fill('input[placeholder="Your phone number"]', '5551234567');
-    // Click the submit button inside the signup section (not the nav button)
     await page.locator('#signup button[type="submit"]').click();
 
     await expect(page.locator('text=Please enter a valid email address')).toBeVisible();

@@ -1,39 +1,34 @@
 // frontend/__tests__/components/Assessment.test.tsx
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Assessment } from '@/components/Assessment';
 
 describe('Assessment', () => {
-  it('renders all 4 pillar questions', () => {
+  it('renders first question', () => {
     render(<Assessment />);
-    expect(screen.getByText('What does your week look like?')).toBeInTheDocument();
-    expect(screen.getByText("When you do train, what's it actually like?")).toBeInTheDocument();
-    expect(screen.getByText("What's your protein situation?")).toBeInTheDocument();
-    expect(screen.getByText("What's 6am feel like?")).toBeInTheDocument();
+    // The component shows "Consistency — What does your week look like?"
+    // Check for the answer options which are always fully rendered
+    expect(screen.getByText("I haven't trained in months (or ever)")).toBeInTheDocument();
   });
 
-  it('shows result after all questions answered', () => {
+  it('shows result immediately when user scores weak on first question', async () => {
     render(<Assessment />);
 
-    // Answer all 4 questions with first option (score 1 each)
     fireEvent.click(screen.getByText("I haven't trained in months (or ever)"));
-    fireEvent.click(screen.getByText('I scroll my phone between sets and leave dry'));
-    fireEvent.click(screen.getByText("Protein what? I couldn't tell you how many grams"));
-    fireEvent.click(screen.getByText("I didn't sleep, or slept 4 hours doom-scrolling"));
 
-    // C wins tie at score 1 (CIDS order)
-    expect(screen.getByText(/Your priority: Consistency/)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Your priority: Consistency/)).toBeInTheDocument();
+    }, { timeout: 1000 });
   });
 
-  it('highlights the correct weakest pillar', () => {
+  it('advances to next question when user scores strong', async () => {
     render(<Assessment />);
 
-    // C=4, I=1, D=4, S=4 => Intensity is weakest
     fireEvent.click(screen.getByText('I show up like clockwork, no excuses'));
-    fireEvent.click(screen.getByText('I scroll my phone between sets and leave dry'));
-    fireEvent.click(screen.getByText('I track my macros and eat to fuel my training'));
-    fireEvent.click(screen.getByText('Eyes open before the alarm, ready to go'));
 
-    expect(screen.getByText(/Your priority: Intensity/)).toBeInTheDocument();
+    await waitFor(() => {
+      // Check for an intensity answer option (proves we moved to question 2)
+      expect(screen.getByText('I scroll my phone between sets and leave dry')).toBeInTheDocument();
+    }, { timeout: 1000 });
   });
 });

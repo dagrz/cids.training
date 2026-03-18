@@ -1,7 +1,8 @@
 const BENEFITS = [
-  { icon: '📱', title: 'Daily nudge', desc: 'One message following the CIDS framework' },
-  { icon: '📖', title: 'CIDS Framework Guide', desc: 'Free PDF — everything you need on one page per pillar' },
-  { icon: '👊', title: 'Accountability', desc: 'We follow up. We check in. We keep you honest.' },
+  { icon: '📖', title: 'Your Personalized CIDS Guide', desc: 'Based on your assessment — start where you need to' },
+  { icon: '📊', title: 'Weekly Accountability Check-In', desc: 'Track your progress and stay honest with yourself' },
+  { icon: '🧠', title: 'Advice That Evolves With You', desc: 'As you level up through CIDS, so does your program' },
+  { icon: '🏷️', title: 'Early Access to Merch & Deals', desc: 'Gear and extras before anyone else' },
 ];
 
 export function WhatYouGet() {

@@ -4,10 +4,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SignupForm } from '@/components/SignupForm';
 
 describe('SignupForm', () => {
-  it('renders email and phone inputs', () => {
+  it('renders email input and submit button', () => {
     render(<SignupForm />);
     expect(screen.getByPlaceholderText('Your email')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Your phone number')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /send me the guide/i })).toBeInTheDocument();
   });
 
   it('shows validation error for invalid email', async () => {
@@ -15,10 +15,7 @@ describe('SignupForm', () => {
     fireEvent.change(screen.getByPlaceholderText('Your email'), {
       target: { value: 'notanemail' },
     });
-    fireEvent.change(screen.getByPlaceholderText('Your phone number'), {
-      target: { value: '5551234567' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /start now/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send me the guide/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/valid email/i)).toBeInTheDocument();
@@ -35,10 +32,7 @@ describe('SignupForm', () => {
     fireEvent.change(screen.getByPlaceholderText('Your email'), {
       target: { value: 'test@example.com' },
     });
-    fireEvent.change(screen.getByPlaceholderText('Your phone number'), {
-      target: { value: '5551234567' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /start now/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send me the guide/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/you're in/i)).toBeInTheDocument();
