@@ -10,8 +10,8 @@ const isProd = env === 'prod';
 new CidsStack(app, `CidsStack-${env}`, {
   env: { region: 'us-east-2' },
   isProd,
-  domainName: isProd ? 'cids.training' : undefined,
-  hostedZoneId: isProd ? app.node.tryGetContext('hostedZoneId') : undefined,
-  certificateArn: isProd ? app.node.tryGetContext('certificateArn') : undefined,
+  domainName: app.node.tryGetContext('domainName') || (isProd ? 'cids.training' : undefined),
+  hostedZoneId: app.node.tryGetContext('hostedZoneId') || undefined,
+  certificateArn: app.node.tryGetContext('certificateArn') || undefined,
   fromEmail: isProd ? 'noreply@cids.training' : 'noreply@cids-dev.training',
 });

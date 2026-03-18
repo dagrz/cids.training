@@ -51,7 +51,7 @@ export class FrontendConstruct extends Construct {
     if (props.domainName && props.certificateArn) {
       const certificate = acm.Certificate.fromCertificateArn(this, 'Cert', props.certificateArn);
       Object.assign(distributionProps, {
-        domainNames: [props.domainName],
+        domainNames: [props.domainName, `www.${props.domainName}`],
         certificate,
       });
     }
@@ -75,6 +75,14 @@ export class FrontendConstruct extends Construct {
 
       new route53.ARecord(this, 'AliasRecord', {
         zone: hostedZone,
+        target: route53.RecordTarget.fromAlias(
+          new route53targets.CloudFrontTarget(distribution)
+        ),
+      });
+
+      new route53.ARecord(this, 'WwwAliasRecord', {
+        zone: hostedZone,
+        recordName: 'www',
         target: route53.RecordTarget.fromAlias(
           new route53targets.CloudFrontTarget(distribution)
         ),

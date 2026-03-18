@@ -4,6 +4,7 @@ import { Construct } from 'constructs';
 import { DatabaseConstruct } from './database-construct';
 import { ApiConstruct } from './api-construct';
 import { FrontendConstruct } from './frontend-construct';
+import { EmailConstruct } from './email-construct';
 
 interface CidsStackProps extends StackProps {
   isProd: boolean;
@@ -27,6 +28,15 @@ export class CidsStack extends Stack {
       certificateArn: props.certificateArn,
       isProd: props.isProd,
     });
+
+    // SES email identity with DKIM + MAIL FROM
+    if (props.domainName && props.hostedZoneId) {
+      new EmailConstruct(this, 'Email', {
+        domainName: props.domainName,
+        hostedZoneId: props.hostedZoneId,
+        mailSubdomain: 'mail',
+      });
+    }
 
     new ApiConstruct(this, 'Api', {
       table: db.table,
