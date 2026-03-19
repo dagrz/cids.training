@@ -8,6 +8,9 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as route53 from 'aws-cdk-lib/aws-route53';
+import * as route53targets from 'aws-cdk-lib/aws-route53-targets';
 import { Duration } from 'aws-cdk-lib';
 import path from 'path';
 
@@ -16,6 +19,8 @@ interface ApiConstructProps {
   pdfBucket: s3.Bucket;
   fromEmail: string;
   domain?: string;
+  hostedZoneId?: string;
+  apiCertificateArn?: string;
 }
 
 export class ApiConstruct extends Construct {
@@ -114,5 +119,33 @@ export class ApiConstruct extends Construct {
 
     const unsubscribe = this.api.root.addResource('unsubscribe');
     unsubscribe.addMethod('GET', new apigateway.LambdaIntegration(unsubscribeFn));
+
+    // Custom domain: api.cids.training
+    if (props.domain && props.hostedZoneId && props.apiCertificateArn) {
+      const apiDomainName = `api.${props.domain}`;
+
+      const certificate = acm.Certificate.fromCertificateArn(
+        this, 'ApiCert', props.apiCertificateArn
+      );
+
+      const customDomain = this.api.addDomainName('ApiDomain', {
+        domainName: apiDomainName,
+        certificate,
+        endpointType: apigateway.EndpointType.EDGE,
+      });
+
+      const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'ApiZone', {
+        hostedZoneId: props.hostedZoneId,
+        zoneName: props.domain,
+      });
+
+      new route53.ARecord(this, 'ApiAliasRecord', {
+        zone: hostedZone,
+        recordName: 'api',
+        target: route53.RecordTarget.fromAlias(
+          new route53targets.ApiGatewayDomain(customDomain)
+        ),
+      });
+    }
   }
 }

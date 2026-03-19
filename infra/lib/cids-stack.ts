@@ -11,6 +11,7 @@ interface CidsStackProps extends StackProps {
   domainName?: string;
   hostedZoneId?: string;
   certificateArn?: string;
+  apiCertificateArn?: string;
   fromEmail?: string;
 }
 
@@ -43,6 +44,8 @@ export class CidsStack extends Stack {
       pdfBucket: frontend.bucket,
       fromEmail: props.fromEmail || 'noreply@cids.training',
       domain: props.domainName,
+      hostedZoneId: props.hostedZoneId,
+      apiCertificateArn: props.apiCertificateArn,
     });
   }
 }

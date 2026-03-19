@@ -13,5 +13,6 @@ new CidsStack(app, `CidsStack-${env}`, {
   domainName: app.node.tryGetContext('domainName') || (isProd ? 'cids.training' : undefined),
   hostedZoneId: app.node.tryGetContext('hostedZoneId') || undefined,
   certificateArn: app.node.tryGetContext('certificateArn') || undefined,
+  apiCertificateArn: app.node.tryGetContext('apiCertificateArn') || undefined,
   fromEmail: isProd ? 'noreply@cids.training' : 'noreply@cids-dev.training',
 });

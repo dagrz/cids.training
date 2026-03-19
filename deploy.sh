@@ -14,6 +14,7 @@ cd infra && AWS_PROFILE=$PROFILE npx cdk deploy \
   --context domainName=cids.training \
   --context hostedZoneId=Z02943592ZGQ3HN7ZOIX5 \
   --context certificateArn=arn:aws:acm:us-east-1:845395042897:certificate/4edcadb9-f9c1-485b-9a16-38b932d30de5 \
+  --context apiCertificateArn=arn:aws:acm:us-east-1:845395042897:certificate/9693dde8-36e8-4e9b-94c3-b4c13d5160b4 \
   --require-approval never && cd ..
 
 echo "==> Invalidating CloudFront cache..."
