@@ -13,9 +13,10 @@ export function SignupForm({ assessmentResult }: SignupFormProps) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [timezone] = useState(() =>
+  const [timezone, setTimezone] = useState(() =>
     Intl.DateTimeFormat().resolvedOptions().timeZone
   );
+  const [showTimezone, setShowTimezone] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +87,29 @@ export function SignupForm({ assessmentResult }: SignupFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           className="bg-white/[0.06] border border-white/10 rounded-lg px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/30"
         />
+
+        <div className="flex items-center justify-between text-xs text-white/30">
+          <span>
+            Timezone: {timezone.replace(/_/g, ' ')}
+          </span>
+          <button
+            type="button"
+            onClick={() => setShowTimezone(!showTimezone)}
+            className="underline hover:text-white/50"
+          >
+            Change
+          </button>
+        </div>
+
+        {showTimezone && (
+          <input
+            type="text"
+            placeholder="e.g. America/New_York"
+            value={timezone}
+            onChange={(e) => setTimezone(e.target.value)}
+            className="bg-white/[0.06] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white placeholder:text-white/30 outline-none focus:border-white/30"
+          />
+        )}
 
         {error && (
           <p className="text-xs text-red-400">{error}</p>
