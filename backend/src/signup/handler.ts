@@ -132,7 +132,7 @@ export async function handler(event: Partial<APIGatewayProxyEvent>): Promise<API
 
     const subscriber = {
       email: body.email,
-      phone: body.phone || '',
+      ...(body.phone ? { phone: body.phone } : {}),
       timezone: body.timezone || 'America/New_York',
       assessmentResult: assessment,
       weakestPillar,
