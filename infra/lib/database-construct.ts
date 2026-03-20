@@ -21,9 +21,5 @@ export class DatabaseConstruct extends Construct {
       sortKey: { name: 'signupDate', type: dynamodb.AttributeType.STRING },
     });
 
-    this.table.addGlobalSecondaryIndex({
-      indexName: 'phone-index',
-      partitionKey: { name: 'phone', type: dynamodb.AttributeType.STRING },
-    });
   }
 }

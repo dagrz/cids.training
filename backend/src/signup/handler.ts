@@ -1,6 +1,7 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { randomUUID } from 'crypto';
 import { putSubscriber } from '../shared/db';
+
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import type { PillarId, AssessmentResult, SignupRequest } from '../shared/types';
 
@@ -132,7 +133,6 @@ export async function handler(event: Partial<APIGatewayProxyEvent>): Promise<API
 
     const subscriber = {
       email: body.email,
-      ...(body.phone ? { phone: body.phone } : {}),
       timezone: body.timezone || 'America/New_York',
       assessmentResult: assessment,
       weakestPillar,
