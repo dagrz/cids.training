@@ -29,12 +29,9 @@ export class FrontendConstruct extends Construct {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
 
-    const oai = new cloudfront.OriginAccessIdentity(this, 'OAI');
-    this.bucket.grantRead(oai);
-
     const distributionProps: cloudfront.DistributionProps = {
       defaultBehavior: {
-        origin: new origins.S3Origin(this.bucket, { originAccessIdentity: oai }),
+        origin: origins.S3BucketOrigin.withOriginAccessControl(this.bucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       defaultRootObject: 'index.html',

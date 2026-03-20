@@ -7,20 +7,26 @@ test.describe('CIDS.training', () => {
     await expect(page.locator('h1')).toContainText('CIDS');
   });
 
-  test('assessment flow shows result', async ({ page }) => {
+  test('assessment exits early on weak score', async ({ page }) => {
     await page.goto('/');
-
-    // Scroll to assessment
     await page.locator('#assessment').scrollIntoViewIfNeeded();
 
-    // Answer all 4 questions (first option = score 1)
+    // Answer first question with weak score — should exit immediately
     await page.click("text=I haven't trained in months");
-    await page.click('text=I scroll my phone between sets');
-    await page.click("text=Protein what?");
-    await page.click("text=I didn't sleep");
 
-    // Should show result
-    await expect(page.locator('text=Your priority')).toBeVisible();
+    // Should show result without asking more questions
+    await expect(page.locator('text=Your priority')).toBeVisible({ timeout: 2000 });
+  });
+
+  test('assessment advances on strong score', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#assessment').scrollIntoViewIfNeeded();
+
+    // Answer first question with strong score
+    await page.click('text=I show up like clockwork');
+
+    // Should advance to intensity question
+    await expect(page.locator('text=I scroll my phone between sets')).toBeVisible({ timeout: 2000 });
   });
 
   test('signup form validates email', async ({ page }) => {
@@ -40,13 +46,13 @@ test.describe('CIDS.training', () => {
     await expect(page.locator('#signup')).toBeInViewport();
   });
 
-  test('gallery is horizontally scrollable', async ({ page }) => {
+  test('gallery renders images in grid', async ({ page }) => {
     await page.goto('/');
-    const gallery = page.locator('.snap-x');
+    const gallery = page.locator('.grid-cols-2');
     await expect(gallery).toBeVisible();
 
-    const scrollWidth = await gallery.evaluate((el) => el.scrollWidth);
-    const clientWidth = await gallery.evaluate((el) => el.clientWidth);
-    expect(scrollWidth).toBeGreaterThan(clientWidth);
+    // Should have 4 images
+    const images = gallery.locator('img');
+    await expect(images).toHaveCount(4);
   });
 });
