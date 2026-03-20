@@ -125,7 +125,7 @@ export function SignupForm({ assessmentResult }: SignupFormProps) {
       </form>
 
       <p className="text-[11px] text-white/25 mt-2.5 text-center">
-        Unsubscribe anytime. No spam, ever.
+        Unsubscribe anytime.
       </p>
     </section>
   );
